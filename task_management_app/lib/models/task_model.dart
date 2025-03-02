@@ -6,6 +6,7 @@ class Task {
   final DateTime commencementDate;
   final DateTime dueDate;
   final String clientName;
+  final String description;
   final bool status;
   final String taskStatus;
 
@@ -17,6 +18,7 @@ class Task {
     required this.commencementDate,
     required this.dueDate,
     required this.clientName,
+    required this.description,
     this.status = true,
     this.taskStatus = "Scheduled",
   });

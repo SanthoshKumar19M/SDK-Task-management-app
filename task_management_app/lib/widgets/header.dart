@@ -2,22 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class Header extends StatelessWidget {
-  final List<String> pathSegments;
+  // final List<String> pathSegments;
+  final String breadCrums;
   final String userInitial;
 
   const Header({
     Key? key,
-    required this.pathSegments,
+    required this.breadCrums,
     required this.userInitial,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     // If the path is empty or starts with "/", replace the first segment with "Dashboard"
-    List<String> updatedSegments = List.from(pathSegments);
-    if (updatedSegments.isEmpty || updatedSegments.first.isEmpty) {
-      updatedSegments = ["Dashboard", ...updatedSegments.skip(1)];
-    }
+    // List<String> updatedSegments = List.from(pathSegments);
+    // if (updatedSegments.isEmpty || updatedSegments.first.isEmpty) {
+    //   updatedSegments = ["Dashboard", ...updatedSegments.skip(1)];
+    // }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,20 +30,26 @@ class Header extends StatelessWidget {
             children: [
               // Breadcrumbs
               Row(
-                children: updatedSegments.map((segment) {
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          segment,
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        if (segment != updatedSegments.last) const Icon(Icons.chevron_right, color: Colors.grey),
-                      ],
-                    ),
-                  );
-                }).toList(),
+                children: [
+                  Text(
+                    breadCrums,
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  )
+                ],
+                // children: updatedSegments.map((segment) {
+                //   return Padding(
+                //     padding: const EdgeInsets.only(right: 8.0),
+                //     child: Row(
+                //       children: [
+                //         Text(
+                //           segment,
+                //           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                //         ),
+                //         if (segment != updatedSegments.last) const Icon(Icons.chevron_right, color: Colors.grey),
+                //       ],
+                //     ),
+                //   );
+                // }).toList(),
               ),
 
               // User Profile Button with Popup Menu

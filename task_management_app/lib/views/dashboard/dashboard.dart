@@ -30,7 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
         tasks = fetchedTasks;
         isLoading = false;
       });
-      // print(tasks);
     } catch (error) {
       print("Error fetching tasks: $error");
       setState(() {
@@ -39,25 +38,35 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void _moveToWithheldTasks(dynamic task) {
-    setState(() {
-      tasks.remove(task);
+  Future<void> _deleteTask(dynamic task) async {
+    try {
+      await _taskService.deleteTask(task['_id']);
+      setState(() {
+        tasks.remove(task);
+      });
+
       Fluttertoast.showToast(
-        msg: "Task moved to With-held Tasks",
+        msg: "Task deleted successfully",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.TOP,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.green,
         textColor: Colors.white,
       );
-    });
+    } catch (error) {
+      Fluttertoast.showToast(
+        msg: "Failed to delete task: $error",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.TOP,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // final String routePath = GoRouterState.of(context).uri.toString();
-    // List<String> pathSegments = routePath.split('/').where((e) => e.isNotEmpty).toList();
-    List<String> pathSegments = GoRouterState.of(context).uri.toString().split('/').where((s) => s.isNotEmpty).toList();
     String userInitial = "S"; // Replace with dynamic value
+
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       body: Row(
@@ -70,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Header content
-                Header(pathSegments: pathSegments, userInitial: userInitial),
+                Header(breadCrums: "Dashboard", userInitial: userInitial),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 10, 10, 0),
                   child: Row(
@@ -125,12 +134,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                         DataCell(Text(formatDate(task['dueDate']))),
                                         DataCell(Text(task['clientName'] ?? "Unknown")),
                                         DataCell(Text(task['taskStatus'] ?? "Scheduled")),
-                                        // DataCell(
-                                        //   Icon(
-                                        //     task['status'] ? Icons.check_circle : Icons.pending,
-                                        //     color: task['taskStatus'] ? Colors.green : Colors.orange,
-                                        //   ),
-                                        // ),
                                         DataCell(Row(
                                           children: [
                                             IconButton(
@@ -150,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             IconButton(
                                               icon: Icon(Icons.delete, color: Colors.red),
                                               tooltip: "Delete Task",
-                                              onPressed: () => _moveToWithheldTasks(task),
+                                              onPressed: () => _deleteTask(task), // Call delete function
                                             ),
                                           ],
                                         )),
