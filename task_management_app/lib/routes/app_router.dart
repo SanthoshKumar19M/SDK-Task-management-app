@@ -12,6 +12,11 @@ class AppRouter {
     initialLocation: '/login', // Set the initial screen
     routes: [
       GoRoute(
+        path: '/',
+        name: 'home',
+        builder: (context, state) => HomeScreen(), // ✅ Default home screen is now Dashboard
+      ),
+      GoRoute(
         path: '/login',
         name: 'login',
         builder: (context, state) => LoginScreen(),
@@ -26,11 +31,11 @@ class AppRouter {
         name: 'signup',
         builder: (context, state) => SignupScreen(),
       ),
-      GoRoute(
-        path: '/',
-        name: 'dashboard',
-        builder: (context, state) => HomeScreen(),
-      ),
+      // GoRoute(
+      //   path: '/dashboard',
+      //   name: 'dashboard',
+      //   builder: (context, state) => HomeScreen(),
+      // ),
       GoRoute(
         path: '/create-task',
         name: 'addTask',

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'login_screen.dart';
+import 'package:go_router/go_router.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -15,22 +15,19 @@ class _SignupScreenState extends State<SignupScreen> {
 
   void handleSignup() {
     if (_formKey.currentState!.validate()) {
-      // Show SnackBar at the top
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Signup Successful"),
-          behavior: SnackBarBehavior.floating,
-          margin: EdgeInsets.only(top: 20, left: 20, right: 20),
-          duration: Duration(seconds: 2),
-        ),
-      );
+      // Show a SnackBar (Uncomment if needed)
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text("Signup Successful"),
+      //     behavior: SnackBarBehavior.floating,
+      //     margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+      //     duration: Duration(seconds: 2),
+      //   ),
+      // );
 
-      // Navigate to Login screen after 2 seconds
+      // Navigate to Login screen using GoRouter
       Future.delayed(Duration(seconds: 2), () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => LoginScreen()),
-        );
+        context.go('/login'); // ✅ Replaces the login screen in URL properly
       });
     }
   }
@@ -159,7 +156,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
                     // Back to Login Button
                     TextButton(
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () => context.go('/login'), // ✅ Uses GoRouter for navigation
                       child: Text("Back to Login"),
                     ),
                   ],

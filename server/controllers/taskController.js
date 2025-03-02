@@ -19,7 +19,8 @@ const getAll = async (req, res) => {
             commencementDate: task.commencementDate,
             dueDate: task.dueDate,
             clientName: task.clientName,
-            status: task.status
+            status: task.status,
+            taskStatus: task.taskStatus
         }));
 
         res.status(200).json({
