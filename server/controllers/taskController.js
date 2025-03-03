@@ -19,7 +19,8 @@ const getAll = async (req, res) => {
             commencementDate: task.commencementDate,
             dueDate: task.dueDate,
             clientName: task.clientName,
-            status: task.status
+            status: task.status,
+            taskStatus: task.taskStatus
         }));
 
         res.status(200).json({
@@ -46,6 +47,7 @@ const create = async (req, res) => {
             message: "Task created successfully",
             task: newTask
         });
+        console.log("newTask");
         console.log(newTask);
 
 

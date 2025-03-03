@@ -23,7 +23,8 @@ class _LoginScreenState extends State<LoginScreen> {
         //   context,
         //   MaterialPageRoute(builder: (context) => HomeScreen()),
         // );
-        context.push('/');
+        // context.push('/');
+        context.go('/');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -78,7 +79,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: () => context.push('/signup'),
+                      onPressed: handleLogin,
+                      // onPressed: () => context.push('/signup'),
                       // onPressed: () {
                       // Navigate to Sign Up Page
                       // Navigator.push(
@@ -160,19 +162,21 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     // Forgot Password
                     TextButton(
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ForgotPasswordScreen()),
-                      ),
+                      // onPressed: () => Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => ForgotPasswordScreen()),
+                      // ),
+                      onPressed: () => context.go('/forgot-password'),
                       child: Text("Forgot Password?"),
                     ),
 
                     // Sign Up
                     TextButton(
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SignupScreen()),
-                      ),
+                      // onPressed: () => Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => SignupScreen()),
+                      // ),
+                      onPressed: () => context.go('/signup'),
                       child: Text("Create an Account"),
                     ),
                   ],

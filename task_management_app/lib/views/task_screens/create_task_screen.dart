@@ -1,128 +1,163 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import '../../core/theme.dart';
 import '../../providers/task_provider.dart';
 import '../../widgets/custom_text_field.dart';
+import '../../widgets/side_nav_bar.dart';
+import '../../widgets/header.dart';
 
 class CreateTaskScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final taskProvider = Provider.of<TaskProvider>(context);
+    final taskProvider = Provider.of<TaskProvider>(context, listen: false);
+    String userInitial = "S"; // Replace with dynamic value
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Create Task")),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Task Name & Task Number in One Row
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomTextField(
-                      label: "Task Name",
-                      onChanged: taskProvider.setTaskName,
+      backgroundColor: AppTheme.backgroundColor,
+      body: Row(
+        children: [
+          SideNavBar(isHomeScreen: false),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Header(breadCrums: "Create task", userInitial: userInitial),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: CustomTextField(
+                                  label: "Task Number",
+                                  initialValue: "Task number will generate automatically",
+                                  enabled: false,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: CustomTextField(
+                                  label: "Task Name",
+                                  onChanged: taskProvider.setTaskName,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: CustomTextField(
+                                  label: "Assigned By",
+                                  initialValue: taskProvider.assignedBy,
+                                  enabled: false,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: CustomTextField(
+                                  label: "Assigned To",
+                                  onChanged: taskProvider.setAssignedTo,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: DatePickerField(
+                                  label: "Commencement Date",
+                                  selectedDate: taskProvider.commencementDate,
+                                  onDateSelected: taskProvider.setCommencementDate,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: DatePickerField(
+                                  label: "Due Date",
+                                  selectedDate: taskProvider.dueDate,
+                                  onDateSelected: taskProvider.setDueDate,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          CustomTextField(
+                            label: "Description",
+                            onChanged: taskProvider.setDescription,
+                            maxLines: 3,
+                          ),
+                          const SizedBox(height: 20),
+                          const Text(
+                            "Client Details",
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                          ),
+                          _buildClientDetailsTable(),
+                        ],
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: CustomTextField(
-                      label: "Task Number",
-                      initialValue: taskProvider.urn,
-                      enabled: false,
-                    ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          if (_validateInputs(taskProvider)) {
+                            taskProvider.submitTask(context);
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: AppTheme.primaryColor,
+                        ),
+                        child: const Text("Submit"),
+                      ),
+                      const SizedBox(width: 10),
+                      OutlinedButton(
+                        onPressed: () => context.go('/'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppTheme.primaryColor,
+                          side: BorderSide(color: AppTheme.primaryColor),
+                        ),
+                        child: const Text("Cancel"),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-
-              const SizedBox(height: 10),
-
-              // Assigned By & Assigned To in One Row
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomTextField(
-                      label: "Assigned By",
-                      initialValue: taskProvider.assignedBy,
-                      enabled: false,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: CustomTextField(
-                      label: "Assigned To",
-                      onChanged: taskProvider.setAssignedTo,
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 10),
-
-              // Commencement Date & Due Date in One Row
-              Row(
-                children: [
-                  Expanded(
-                    child: DatePickerField(
-                      label: "Commencement Date",
-                      selectedDate: taskProvider.commencementDate,
-                      onDateSelected: taskProvider.setCommencementDate,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: DatePickerField(
-                      label: "Due Date",
-                      selectedDate: taskProvider.dueDate,
-                      onDateSelected: taskProvider.setDueDate,
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 10),
-
-              CustomTextField(
-                label: "Client Name",
-                onChanged: taskProvider.setClientName,
-              ),
-
-              const SizedBox(height: 20),
-
-              const Text(
-                "Client Details",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-              _buildClientDetailsTable(),
-            ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  taskProvider.submitTask();
-                },
-                child: const Text("Submit"),
-              ),
-              OutlinedButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text("Cancel"),
-              ),
-            ],
-          ),
-        ),
+        ],
       ),
     );
   }
 
-  /// Builds the client details table (Placeholder data)
+  bool _validateInputs(TaskProvider provider) {
+    if (provider.taskName.isEmpty || provider.assignedTo.isEmpty || provider.commencementDate == null || provider.dueDate == null) {
+      Fluttertoast.showToast(
+        msg: "Please fill all required fields",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.TOP,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        webPosition: "center",
+      );
+      return false;
+    }
+    return true;
+  }
+
   Widget _buildClientDetailsTable() {
     return DataTable(
       columns: const [
@@ -146,23 +181,54 @@ class CreateTaskScreen extends StatelessWidget {
   }
 }
 
-/// Custom Date Picker Field Widget
-class DatePickerField extends StatelessWidget {
+/// Fixed Date Picker Field
+class DatePickerField extends StatefulWidget {
   final String label;
   final DateTime? selectedDate;
   final Function(DateTime) onDateSelected;
 
-  const DatePickerField({required this.label, this.selectedDate, required this.onDateSelected});
+  const DatePickerField({
+    Key? key,
+    required this.label,
+    this.selectedDate,
+    required this.onDateSelected,
+  }) : super(key: key);
+
+  @override
+  _DatePickerFieldState createState() => _DatePickerFieldState();
+}
+
+class _DatePickerFieldState extends State<DatePickerField> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(
+      text: widget.selectedDate != null ? widget.selectedDate!.toString().split(' ')[0] : '',
+    );
+  }
+
+  @override
+  void didUpdateWidget(covariant DatePickerField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.selectedDate != oldWidget.selectedDate) {
+      _controller.text = widget.selectedDate != null ? widget.selectedDate!.toString().split(' ')[0] : '';
+    }
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     final picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate ?? DateTime.now(),
+      initialDate: widget.selectedDate ?? DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );
     if (picked != null) {
-      onDateSelected(picked);
+      widget.onDateSelected(picked);
+      setState(() {
+        _controller.text = picked.toString().split(' ')[0];
+      });
     }
   }
 
@@ -172,15 +238,19 @@ class DatePickerField extends StatelessWidget {
       onTap: () => _selectDate(context),
       child: AbsorbPointer(
         child: TextFormField(
+          controller: _controller,
           decoration: InputDecoration(
-            labelText: label,
+            labelText: widget.label,
             suffixIcon: const Icon(Icons.calendar_today),
-          ),
-          controller: TextEditingController(
-            text: selectedDate != null ? selectedDate!.toString().split(' ')[0] : '',
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }

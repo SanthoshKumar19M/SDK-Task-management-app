@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'login_screen.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -48,13 +49,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     //   backgroundColor: Colors.teal,
     //   textColor: Colors.white,
     // );
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Password reset successful, you can login again!'),
-        behavior: SnackBarBehavior.floating,
-        margin: EdgeInsets.only(top: 10, left: 16, right: 16),
-      ),
-    );
   }
 
   void submitOtp() {
@@ -218,10 +212,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                             margin: EdgeInsets.only(top: 10, left: 16, right: 16),
                                           ),
                                         );
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => LoginScreen()),
-                                        );
+                                        // Navigator.pushReplacement(
+                                        //   context,
+                                        //   MaterialPageRoute(builder: (context) => LoginScreen()),
+                                        // );
+                                        context.go('/login');
                                       }
                                     : null,
                     style: ElevatedButton.styleFrom(
