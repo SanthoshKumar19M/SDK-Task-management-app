@@ -1,16 +1,38 @@
-# task_management_app
+# Task Management App
 
-A new Flutter project.
+A Flutter-based task management application designed to help users create, track, and manage their tasks efficiently.
 
-## Getting Started
+## Installation & Setup
+### Backend (Server)
+1. Navigate to the server directory and install dependencies:
+   ```bash
+   npm install
+   ```
+2. Start the backend server:
+   ```bash
+   nodemon
+   ```
+3. Include .env file in server
+   add mongo connection string and port
 
-This project is a starting point for a Flutter application.
+### Frontend (Flutter App)
+1. Navigate to the Flutter project directory and install dependencies:
+   ```bash
+   flutter pub get
+   ```
+2. Run the Flutter application:
+   ```bash
+   flutter run
+   ```
 
-A few resources to get you started if this is your first Flutter project:
+## Screenshots for completed works
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![alt text](./readme_images/login.jpg)
+![alt text](./readme_images/sign-up.jpg) 
+![alt text](./readme_images/forgot-pass.jpg) 
+![alt text](./readme_images/forgot-pass-otp.jpg) 
+![alt text](./readme_images/login.jpg) 
+![alt text](./readme_images/new-pass.jpg) 
+![alt text](./readme_images/Create-task.png) 
+![alt text](./readme_images/Dashboard-screen.png) 
+![alt text](./readme_images/header-button.png)
